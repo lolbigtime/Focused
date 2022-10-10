@@ -1,0 +1,6 @@
+framework module Pods_Focused {
+  umbrella header "Pods-Focused-umbrella.h"
+
+  export *
+  module * { export * }
+}
