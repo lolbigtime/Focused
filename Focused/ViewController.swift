@@ -152,6 +152,8 @@ class musicViewController: UITableViewController {
         }
     }
     
+    
+    
     func remove() {
         self.playing = false
         self.vinyl.layer.removeAllAnimations()
