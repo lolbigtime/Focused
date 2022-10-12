@@ -126,23 +126,135 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 }
-class musicViewController: UITableViewController {
+class musicViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, AVAudioPlayerDelegate {
+    
+    var colors = [UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue]
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! vinylCell
+        cell.backgroundColor = colors[indexPath.row]
+        switch indexPath.row {
+        case 0:
+            cell.title.text = "Default"
+        case 1:
+            cell.title.text = "Playful"
+        case 2:
+            cell.title.text = "Waves"
+        default:
+            cell.title.text = ""
+        }
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let zcell = cell as! vinylCell
+        
+        audioPlayer?.stop()
+        
+        if selectedRunningCell != nil {
+            selectedRunningCell!.vinyl.layer.removeAllAnimations()
+            selectedRunningCell!.vinyl.layoutIfNeeded()
+        } else {
+            zcell.vinyl.layer.removeAllAnimations()
+            zcell.vinyl.layoutIfNeeded()
+        }
+        
+        
+    }
+    var loop = false
+    @IBOutlet weak var loopbutton: UIButton!
+    @IBAction func loop(_ sender: Any) {
+        if loop == false {
+            loopbutton.tintColor = .systemPurple
+            loopbutton.rotacion()
+            loop = true
+        } else {
+            loopbutton.tintColor = .white
+            loopbutton.layer.removeAllAnimations()
+            loopbutton.layoutIfNeeded()
+            loop = false
+        }
+    }
+    var selectedRunningCell: vinylCell?
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if selectedRunningCell != nil {
+            audioPlayer?.stop()
+
+            selectedRunningCell!.vinyl.layer.removeAllAnimations()
+            selectedRunningCell!.vinyl.layoutIfNeeded()
+            
+            if selectedRunningCell != collectionView.cellForItem(at: indexPath) as! vinylCell {
+                selectedRunningCell = collectionView.cellForItem(at: indexPath) as! vinylCell
+                playAudioFile()
+                selectedRunningCell!.vinyl.rotate()
+            } else {
+                selectedRunningCell = nil
+            }
+            
+            do {
+                try audioSession.setActive(false)
+            } catch {
+                print("unable to deactivate")
+            }
+            
+            
+            
+            
+        } else {
+            selectedRunningCell = collectionView.cellForItem(at: indexPath) as! vinylCell
+            playAudioFile()
+            selectedRunningCell!.vinyl.rotate()
+        }
+    
+    }
     
     var audioPlayer: AVAudioPlayer?
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if loop == true {
+            playAudioFile()
+        } else {
+            selectedRunningCell!.vinyl.layer.removeAllAnimations()
+            selectedRunningCell!.vinyl.layer.removeAllAnimations()
+            selectedRunningCell!.vinyl.layoutIfNeeded()
+        }
+        print("Finish")
+    }
+    let audioSession = AVAudioSession.sharedInstance()
 
     func playAudioFile() {
+                
+        do {
+            try audioSession.setCategory(.playback, mode: .default, options: .duckOthers)
+            try audioSession.setActive(true)
+
+        } catch {
+            print("Failed to set audio session category.")
+        }
         
-        let pathToSound = Bundle.main.path(forResource: "Default", ofType: "wav")!
+        
+        
+        
+        let pathToSound = Bundle.main.path(forResource: selectedRunningCell!.title.text, ofType: "wav")!
         let url = URL(fileURLWithPath: pathToSound)
         
         do
         {
+            
+            
+            
             audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
 
-
+            audioPlayer?.delegate = self
+            
             audioPlayer?.prepareToPlay()
             audioPlayer?.volume = 1
             audioPlayer?.play()
+            
+            
             
            
         }
@@ -154,41 +266,32 @@ class musicViewController: UITableViewController {
     
     
     
-    func remove() {
-        self.playing = false
-        self.vinyl.layer.removeAllAnimations()
-        self.view.layer.removeAllAnimations()
-        self.view.layoutIfNeeded()
-
-    }
-    var playing: Bool = false
-    @IBAction func playmusic(_ sender: Any) {
-        print(playing)
-        if playing {
-            playing = false
-            audioPlayer?.stop()
-            self.remove()
-        } else {
-            playing = true
-            playAudioFile()
-            vinyl.rotate()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 27.5) {
-                if self.playing {
-                    self.remove()
-                }
-            }
-        }
-    }
-    @IBOutlet weak var vinyl: UIImageView!
     
-        override func viewWillAppear(_ animated: Bool) {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.prefersLargeTitles = false
+        
+        
+        
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
     }
+}
+class vinylCell: UICollectionViewCell {
+    @IBOutlet weak var vinyl: UIImageView!
+    @IBOutlet weak var title: UILabel!
+    
 }
 extension UIImageView {
     func rotate() {
@@ -200,7 +303,16 @@ extension UIImageView {
         self.layer.add(rotation, forKey: "rotationAnimation")
     }
 }
-
+extension UIView {
+    func rotacion() {
+        let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotation.toValue = NSNumber(value: Double.pi * 2)
+        rotation.duration = 2
+        rotation.isCumulative = true
+        rotation.repeatCount = Float.greatestFiniteMagnitude
+        self.layer.add(rotation, forKey: "rotationAnimation")
+    }
+}
 
 
 
@@ -806,3 +918,4 @@ extension UIView {
         layer.mask = mask
     }
 }
+//reward system + custom notif sounds
