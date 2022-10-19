@@ -8,10 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		431825182892033D00E02788 /* PulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431825172892033D00E02788 /* PulseAnimation.swift */; };
-		431A840928F3E61A00F30AF5 /* Default.wav in Resources */ = {isa = PBXBuildFile; fileRef = 431A840828F3E61A00F30AF5 /* Default.wav */; };
+		431A840928F3E61A00F30AF5 /* Focused.wav in Resources */ = {isa = PBXBuildFile; fileRef = 431A840828F3E61A00F30AF5 /* Focused.wav */; };
 		431A840B28F3ECE600F30AF5 /* gifCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A840A28F3ECE600F30AF5 /* gifCompiler.swift */; };
 		431A840E28F537D900F30AF5 /* Notebook.gif in Resources */ = {isa = PBXBuildFile; fileRef = 431A840D28F537D900F30AF5 /* Notebook.gif */; };
 		431A841028F699CD00F30AF5 /* Playful.wav in Resources */ = {isa = PBXBuildFile; fileRef = 431A840F28F699CC00F30AF5 /* Playful.wav */; };
+		431A841328F7F0EA00F30AF5 /* Default - System.wav in Resources */ = {isa = PBXBuildFile; fileRef = 431A841228F7F0EA00F30AF5 /* Default - System.wav */; };
+		431A841628F95AA300F30AF5 /* DefaultTune.caf in Resources */ = {isa = PBXBuildFile; fileRef = 431A841128F7EAF600F30AF5 /* DefaultTune.caf */; };
+		431A841728F95AA500F30AF5 /* PlayfulTune.caf in Resources */ = {isa = PBXBuildFile; fileRef = 431A841528F9563D00F30AF5 /* PlayfulTune.caf */; };
 		4358B01A289B05D9004FAC47 /* BEMCheckBox in Frameworks */ = {isa = PBXBuildFile; productRef = 4358B019289B05D9004FAC47 /* BEMCheckBox */; };
 		437E497A28911CF10044DE28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E497928911CF10044DE28 /* AppDelegate.swift */; };
 		437E497C28911CF10044DE28 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E497B28911CF10044DE28 /* SceneDelegate.swift */; };
@@ -29,10 +32,13 @@
 		1758C7CF303EB270899F7878 /* Pods-Focused.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focused.release.xcconfig"; path = "Target Support Files/Pods-Focused/Pods-Focused.release.xcconfig"; sourceTree = "<group>"; };
 		1B33DE88AA6A7CCCA5D05216 /* Pods-Focused.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focused.debug.xcconfig"; path = "Target Support Files/Pods-Focused/Pods-Focused.debug.xcconfig"; sourceTree = "<group>"; };
 		431825172892033D00E02788 /* PulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimation.swift; sourceTree = "<group>"; };
-		431A840828F3E61A00F30AF5 /* Default.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Default.wav; sourceTree = "<group>"; };
+		431A840828F3E61A00F30AF5 /* Focused.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Focused.wav; sourceTree = "<group>"; };
 		431A840A28F3ECE600F30AF5 /* gifCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gifCompiler.swift; sourceTree = "<group>"; };
 		431A840D28F537D900F30AF5 /* Notebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Notebook.gif; sourceTree = "<group>"; };
 		431A840F28F699CC00F30AF5 /* Playful.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Playful.wav; sourceTree = "<group>"; };
+		431A841128F7EAF600F30AF5 /* DefaultTune.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DefaultTune.caf; sourceTree = "<group>"; };
+		431A841228F7F0EA00F30AF5 /* Default - System.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Default - System.wav"; sourceTree = "<group>"; };
+		431A841528F9563D00F30AF5 /* PlayfulTune.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlayfulTune.caf; sourceTree = "<group>"; };
 		437E497628911CF10044DE28 /* Focused.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Focused.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		437E497928911CF10044DE28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		437E497B28911CF10044DE28 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,7 +77,8 @@
 		431A840328F3DE0900F30AF5 /* Audio Files */ = {
 			isa = PBXGroup;
 			children = (
-				431A840828F3E61A00F30AF5 /* Default.wav */,
+				431A841228F7F0EA00F30AF5 /* Default - System.wav */,
+				431A840828F3E61A00F30AF5 /* Focused.wav */,
 				431A840F28F699CC00F30AF5 /* Playful.wav */,
 			);
 			path = "Audio Files";
@@ -106,6 +113,8 @@
 		437E497828911CF10044DE28 /* Focused */ = {
 			isa = PBXGroup;
 			children = (
+				431A841528F9563D00F30AF5 /* PlayfulTune.caf */,
+				431A841128F7EAF600F30AF5 /* DefaultTune.caf */,
 				431A840328F3DE0900F30AF5 /* Audio Files */,
 				431A840C28F537BB00F30AF5 /* GIf */,
 				437E497928911CF10044DE28 /* AppDelegate.swift */,
@@ -209,12 +218,15 @@
 			files = (
 				431A840E28F537D900F30AF5 /* Notebook.gif in Resources */,
 				437E49932891200F0044DE28 /* TS Block Bold.ttf in Resources */,
+				431A841728F95AA500F30AF5 /* PlayfulTune.caf in Resources */,
+				431A841328F7F0EA00F30AF5 /* Default - System.wav in Resources */,
 				437E498928911CF30044DE28 /* LaunchScreen.storyboard in Resources */,
 				437E49942891200F0044DE28 /* Readme.txt in Resources */,
 				431A841028F699CD00F30AF5 /* Playful.wav in Resources */,
 				437E498128911CF10044DE28 /* Main.storyboard in Resources */,
 				437E499A289123150044DE28 /* Assets.xcassets in Resources */,
-				431A840928F3E61A00F30AF5 /* Default.wav in Resources */,
+				431A841628F95AA300F30AF5 /* DefaultTune.caf in Resources */,
+				431A840928F3E61A00F30AF5 /* Focused.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +452,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -470,7 +482,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
