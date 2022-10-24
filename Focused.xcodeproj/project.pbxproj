@@ -25,6 +25,10 @@
 		437E49932891200F0044DE28 /* TS Block Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 437E49912891200F0044DE28 /* TS Block Bold.ttf */; };
 		437E49942891200F0044DE28 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 437E49922891200F0044DE28 /* Readme.txt */; };
 		437E499A289123150044DE28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 437E4999289123150044DE28 /* Assets.xcassets */; };
+		43E1473329065D4C009FAF69 /* Beats.wav in Resources */ = {isa = PBXBuildFile; fileRef = 43E1473229065D4C009FAF69 /* Beats.wav */; };
+		43E1473529065D75009FAF69 /* Waves.wav in Resources */ = {isa = PBXBuildFile; fileRef = 43E1473429065D75009FAF69 /* Waves.wav */; };
+		43E14739290662BF009FAF69 /* WavesTune.caf in Resources */ = {isa = PBXBuildFile; fileRef = 43E14738290662BF009FAF69 /* WavesTune.caf */; };
+		43E1473B290663F3009FAF69 /* BeatsTune.caf in Resources */ = {isa = PBXBuildFile; fileRef = 43E1473A290663F3009FAF69 /* BeatsTune.caf */; };
 		E459A2FB64F658635E5F4261 /* Pods_Focused.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2EAA09904B330B0687892D /* Pods_Focused.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +54,10 @@
 		437E49912891200F0044DE28 /* TS Block Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TS Block Bold.ttf"; sourceTree = "<group>"; };
 		437E49922891200F0044DE28 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		437E4999289123150044DE28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		43E1473229065D4C009FAF69 /* Beats.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Beats.wav; sourceTree = "<group>"; };
+		43E1473429065D75009FAF69 /* Waves.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Waves.wav; sourceTree = "<group>"; };
+		43E14738290662BF009FAF69 /* WavesTune.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = WavesTune.caf; sourceTree = "<group>"; };
+		43E1473A290663F3009FAF69 /* BeatsTune.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BeatsTune.caf; sourceTree = "<group>"; };
 		9C2EAA09904B330B0687892D /* Pods_Focused.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Focused.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -80,6 +88,8 @@
 				431A841228F7F0EA00F30AF5 /* Default - System.wav */,
 				431A840828F3E61A00F30AF5 /* Focused.wav */,
 				431A840F28F699CC00F30AF5 /* Playful.wav */,
+				43E1473429065D75009FAF69 /* Waves.wav */,
+				43E1473229065D4C009FAF69 /* Beats.wav */,
 			);
 			path = "Audio Files";
 			sourceTree = "<group>";
@@ -115,6 +125,8 @@
 			children = (
 				431A841528F9563D00F30AF5 /* PlayfulTune.caf */,
 				431A841128F7EAF600F30AF5 /* DefaultTune.caf */,
+				43E14738290662BF009FAF69 /* WavesTune.caf */,
+				43E1473A290663F3009FAF69 /* BeatsTune.caf */,
 				431A840328F3DE0900F30AF5 /* Audio Files */,
 				431A840C28F537BB00F30AF5 /* GIf */,
 				437E497928911CF10044DE28 /* AppDelegate.swift */,
@@ -219,13 +231,17 @@
 				431A840E28F537D900F30AF5 /* Notebook.gif in Resources */,
 				437E49932891200F0044DE28 /* TS Block Bold.ttf in Resources */,
 				431A841728F95AA500F30AF5 /* PlayfulTune.caf in Resources */,
+				43E1473529065D75009FAF69 /* Waves.wav in Resources */,
 				431A841328F7F0EA00F30AF5 /* Default - System.wav in Resources */,
 				437E498928911CF30044DE28 /* LaunchScreen.storyboard in Resources */,
+				43E1473B290663F3009FAF69 /* BeatsTune.caf in Resources */,
 				437E49942891200F0044DE28 /* Readme.txt in Resources */,
 				431A841028F699CD00F30AF5 /* Playful.wav in Resources */,
 				437E498128911CF10044DE28 /* Main.storyboard in Resources */,
+				43E14739290662BF009FAF69 /* WavesTune.caf in Resources */,
 				437E499A289123150044DE28 /* Assets.xcassets in Resources */,
 				431A841628F95AA300F30AF5 /* DefaultTune.caf in Resources */,
+				43E1473329065D4C009FAF69 /* Beats.wav in Resources */,
 				431A840928F3E61A00F30AF5 /* Focused.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

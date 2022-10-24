@@ -229,6 +229,7 @@ class ViewController: UIViewController {
         
     }
     @IBOutlet weak var totalTasks: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addObservers()
@@ -252,10 +253,10 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBAction func help(_ sender: Any) {
         performSegue(withIdentifier: "help", sender: self)
     }
-    var colors = [UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue]
+    var colors = [UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.brown]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -280,6 +281,15 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell.title.text = "Waves"
                 cell.isUserInteractionEnabled = true
 
+            } else {
+                cell.isUserInteractionEnabled = false
+                cell.vinyl.image = UIImage(systemName: "lock.fill")
+                cell.title.text = "Unlock - Finish 10 Tasks Early"
+            }
+        case 3:
+            if numberOfTasksFinished >= 15 {
+                cell.title.text = "Beats"
+                cell.isUserInteractionEnabled = true
             } else {
                 cell.isUserInteractionEnabled = false
                 cell.vinyl.image = UIImage(systemName: "lock.fill")
@@ -335,12 +345,6 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
                 selectedRunningCell!.vinyl.rotate()
             } else {
                 selectedRunningCell = nil
-            }
-            
-            do {
-                try audioSession.setActive(false)
-            } catch {
-                print("unable to deactivate")
             }
             
             
@@ -463,10 +467,10 @@ class musicChooseViewController: UIViewController, UICollectionViewDelegate, UIC
         dismiss(animated: true, completion: nil)
     }
     
-    var colors = [UIColor.systemGray, UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue]
+    var colors = [UIColor.systemGray, UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.systemBrown]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -504,6 +508,16 @@ class musicChooseViewController: UIViewController, UICollectionViewDelegate, UIC
         case 3:
             if numberOfTasksFinished >= 10 {
                 cell.title.text = "Waves"
+                cell.isUserInteractionEnabled = true
+
+            } else {
+                cell.isUserInteractionEnabled = false
+                cell.vinyl.image = UIImage(systemName: "lock.fill")
+                cell.title.text = "Unlock - Finish 10 Tasks Early"
+            }
+        case 4:
+            if numberOfTasksFinished >= 15 {
+                cell.title.text = "Beats"
                 cell.isUserInteractionEnabled = true
 
             } else {
@@ -678,18 +692,32 @@ class veryImportantViewController: UIViewController, UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "task", for: indexPath) as! taskCell
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
         formatter.unitsStyle = .full
         
         
         if let trigger = tasksCollection[indexPath.row].trigger as? UNCalendarNotificationTrigger {
             
-            let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
-            if trigger.repeats == true {
-                cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
-            } else {
-                cell.taskTime.text = "Due in \(formattedString!)"
-            }
+            var secondsRemaining = trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+                    if secondsRemaining >= -1 {
+                        let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
+
+                        secondsRemaining -= 1
+                        
+                        if trigger.repeats == true {
+                            cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
+                        } else {
+                            cell.taskTime.text = "Due in \(formattedString!)"
+                        }
+                        
+                        
+                    } else {
+                        self.applicationDidBecomeActive()
+                        Timer.invalidate()
+                    }
+                }
+            
         } else {
             cell.taskTime.text = "Unknown"
         }
@@ -752,13 +780,14 @@ class veryImportantViewController: UIViewController, UICollectionViewDataSource,
         removeObservers()
     }
     
-    
+   
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tasksCollection = []
         tasks = UserDefaults.standard.array(forKey: "High") as? [String] ?? []
         var pendingNotifs: [String] = []
+        
         center.getPendingNotificationRequests(completionHandler: { requests in
             for request in requests {
                 if self.tasks.contains(request.identifier) {
@@ -769,7 +798,7 @@ class veryImportantViewController: UIViewController, UICollectionViewDataSource,
             
 
             UserDefaults.standard.set(pendingNotifs, forKey: "High")
-
+            /*
             for task in self.tasksCollection {
                 var trigger = task.trigger as? UNCalendarNotificationTrigger
                 let dateNow: Date
@@ -785,9 +814,9 @@ class veryImportantViewController: UIViewController, UICollectionViewDataSource,
                 }
                 
                 let timer = Timer(fireAt: dateNow, interval: 0, target: self, selector: #selector(self.applicationDidBecomeActive), userInfo: nil, repeats: false)
-                RunLoop.main.add(timer, forMode: .common)
+               // RunLoop.main.add(timer, forMode: .common)
             }
-            
+             */
             DispatchQueue.main.sync {
                 if self.tasksCollection.isEmpty == false {
                     self.collectionView.reloadData()
@@ -831,19 +860,33 @@ class MediumViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "task", for: indexPath) as! taskCell
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
         formatter.unitsStyle = .full
         
         //unfinished - ill do tn
         
         if let trigger = tasksCollection[indexPath.row].trigger as? UNCalendarNotificationTrigger {
             
-            let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
-            if trigger.repeats == true {
-                cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
-            } else {
-                cell.taskTime.text = "Due in \(formattedString!)"
-            }
+            var secondsRemaining = trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+                    if secondsRemaining >= -1 {
+                        let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
+
+                        secondsRemaining -= 1
+                        
+                        if trigger.repeats == true {
+                            cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
+                        } else {
+                            cell.taskTime.text = "Due in \(formattedString!)"
+                        }
+                        
+                        
+                    } else {
+                        self.applicationDidBecomeActive()
+                        Timer.invalidate()
+                    }
+                }
+            
         } else {
             cell.taskTime.text = "Unknown"
         }
@@ -921,22 +964,6 @@ class MediumViewController: UIViewController, UICollectionViewDataSource, UIColl
             }
             UserDefaults.standard.set(pendingNotifs, forKey: "Medium")
             
-            for task in self.tasksCollection {
-                var trigger = task.trigger as? UNCalendarNotificationTrigger
-                let dateNow: Date
-                var dateComponentsNow = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date.now)
-                if (trigger?.dateComponents.month == nil) && (trigger?.dateComponents.year == nil) {
-                    dateComponentsNow.hour = trigger?.dateComponents.hour
-                    dateComponentsNow.minute = trigger?.dateComponents.minute
-                    dateComponentsNow.second = trigger?.dateComponents.second
-                    dateNow = Calendar.current.date(from: dateComponentsNow)!
-                } else {
-                    dateNow = Calendar.current.date(from: trigger!.dateComponents)!
-                }
-                
-                let timer = Timer(fireAt: dateNow, interval: 0, target: self, selector: #selector(self.applicationDidBecomeActive), userInfo: nil, repeats: false)
-                RunLoop.main.add(timer, forMode: .common)
-            }
             
             DispatchQueue.main.sync {
                 if self.tasksCollection.isEmpty == false {
@@ -976,19 +1003,32 @@ class LowViewController: UIViewController, UICollectionViewDataSource, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "task", for: indexPath) as! taskCell
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
         formatter.unitsStyle = .full
         
         //unfinished - ill do tn
         
         if let trigger = tasksCollection[indexPath.row].trigger as? UNCalendarNotificationTrigger {
             
-            let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
-            if trigger.repeats == true {
-                cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
-            } else {
-                cell.taskTime.text = "Due in \(formattedString!)"
-            }
+            var secondsRemaining = trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+                    if secondsRemaining >= -1 {
+                        let formattedString = formatter.string(from: trigger.nextTriggerDate()?.timeIntervalSinceNow ?? 0)
+
+                        secondsRemaining -= 1
+                        
+                        if trigger.repeats == true {
+                            cell.taskTime.text = "Due and repeats ↻ in \(formattedString!)"
+                        } else {
+                            cell.taskTime.text = "Due in \(formattedString!)"
+                        }
+                        
+                        
+                    } else {
+                        self.applicationDidBecomeActive()
+                        Timer.invalidate()
+                    }
+                }
             
         } else {
             cell.taskTime.text = "Unknown"
@@ -1052,7 +1092,6 @@ class LowViewController: UIViewController, UICollectionViewDataSource, UICollect
         removeObservers()
     }
     
-    
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -1070,22 +1109,7 @@ class LowViewController: UIViewController, UICollectionViewDataSource, UICollect
             }
             UserDefaults.standard.set(pendingNotifs, forKey: "Low")
 
-            for task in self.tasksCollection {
-                var trigger = task.trigger as? UNCalendarNotificationTrigger
-                let dateNow: Date
-                var dateComponentsNow = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date.now)
-                if (trigger?.dateComponents.month == nil) && (trigger?.dateComponents.year == nil) {
-                    dateComponentsNow.hour = trigger?.dateComponents.hour
-                    dateComponentsNow.minute = trigger?.dateComponents.minute
-                    dateComponentsNow.second = trigger?.dateComponents.second
-                    dateNow = Calendar.current.date(from: dateComponentsNow)!
-                } else {
-                    dateNow = Calendar.current.date(from: trigger!.dateComponents)!
-                }
-                
-                let timer = Timer(fireAt: dateNow, interval: 0, target: self, selector: #selector(self.applicationDidBecomeActive), userInfo: nil, repeats: false)
-                RunLoop.main.add(timer, forMode: .common)
-            }
+            
             
             DispatchQueue.main.sync {
                 if self.tasksCollection.isEmpty == false {
@@ -1253,7 +1277,9 @@ class chooseTimeTask: UITableViewController {
         case "Playful":
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "PlayfulTune.caf"))
         case "Wave":
-            break
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "WaveTune.caf"))
+        case "Beats":
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "BeatsTune.caf"))
         default:
             content.sound = UNNotificationSound.default
         }
@@ -1552,7 +1578,6 @@ extension UIView {
 }
 //make very important notifs bypass do not disturb
 //swap between pickerview and calendar swift
-//real time countdown in minutes and seconds
 //redesign notif view controllers
 //resizing views collectionview
 //add description to tasks
