@@ -53,7 +53,7 @@ class ViewController: UIViewController {
             sender.isUserInteractionEnabled = true
         }
         pulse.animationDuration = 2
-        pulse.backgroundColor = #colorLiteral(red: 1, green: 0.8268307787, blue: 0.6278962847, alpha: 1).cgColor
+        pulse.backgroundColor = #colorLiteral(red: 1, green: 0.8274509804, blue: 0.6274509804, alpha: 1).cgColor
         self.view.layer.insertSublayer(pulse, below: self.view.layer)
     }
     let center = UNUserNotificationCenter.current()
@@ -253,10 +253,10 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBAction func help(_ sender: Any) {
         performSegue(withIdentifier: "help", sender: self)
     }
-    var colors = [UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.brown]
+    var colors = [UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.brown, UIColor.systemYellow]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -265,6 +265,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.isUserInteractionEnabled = false
         switch indexPath.row {
         case 0:
+            cell.vinyl.image = UIImage(systemName: "clipartVinyl")
             cell.title.text = "Focused"
             cell.isUserInteractionEnabled = true
         case 1:
@@ -278,6 +279,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
             }
         case 2:
             if numberOfTasksFinished >= 10 {
+                cell.vinyl.image = UIImage(systemName: "clipartVinyl")
                 cell.title.text = "Waves"
                 cell.isUserInteractionEnabled = true
 
@@ -288,6 +290,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
             }
         case 3:
             if numberOfTasksFinished >= 15 {
+                cell.vinyl.image = UIImage(systemName: "clipartVinyl")
                 cell.title.text = "Beats"
                 cell.isUserInteractionEnabled = true
             } else {
@@ -295,7 +298,18 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell.vinyl.image = UIImage(systemName: "lock.fill")
                 cell.title.text = "Unlock - Finish 10 Tasks Early"
             }
+        case 4:
+            if numberOfTasksFinished >= 20 {
+                cell.vinyl.image = UIImage(systemName: "clipartVinyl")
+                cell.title.text = "End"
+                cell.isUserInteractionEnabled = true
+            } else {
+                cell.isUserInteractionEnabled = false
+                cell.vinyl.image = UIImage(systemName: "lock.fill")
+                cell.title.text = "Unlock - Finish 10 Tasks Early"
+            }
         default:
+            cell.vinyl.image = UIImage(systemName: "clipartVinyl")
             cell.isUserInteractionEnabled = false
             cell.title.text = ""
         }
@@ -351,6 +365,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
             
             
         } else {
+            soundtrack.tintColor = .white
             selectedRunningCell = collectionView.cellForItem(at: indexPath) as! vinylCell
             playAudioFile()
             selectedRunningCell!.vinyl.rotate()
@@ -363,11 +378,56 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
         if loop == true {
             playAudioFile()
         } else {
+            soundtrack.tintColor = .white
             selectedRunningCell!.vinyl.layer.removeAllAnimations()
             selectedRunningCell!.vinyl.layer.removeAllAnimations()
             selectedRunningCell!.vinyl.layoutIfNeeded()
         }
-        print("Finish")
+    }
+    @IBAction func fullSoundTrack(_ sender: Any) {
+        soundtrack.tintColor = .systemPurple
+
+        if selectedRunningCell != nil {
+            audioPlayer?.stop()
+
+            selectedRunningCell!.vinyl.layer.removeAllAnimations()
+            selectedRunningCell!.vinyl.layoutIfNeeded()
+            
+            
+            
+            
+        }
+        
+        do {
+            try audioSession.setCategory(.playback, mode: .default, options: .duckOthers)
+            try audioSession.setActive(true)
+
+        } catch {
+            print("Failed to set audio session category.")
+
+        }
+        
+        
+        do {
+        
+        let pathToSound = Bundle.main.path(forResource: "Soundtrack", ofType: "wav")!
+        let url = URL(fileURLWithPath: pathToSound)
+            
+            
+            audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+
+            audioPlayer?.delegate = self
+            
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.volume = 1
+            audioPlayer?.play()
+            
+        }
+        catch
+        {
+            soundtrack.tintColor = .white
+            print(error.localizedDescription)
+        }
     }
     let audioSession = AVAudioSession.sharedInstance()
 
@@ -413,6 +473,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     
     
+    @IBOutlet weak var soundtrack: UIButton!
     
     @IBOutlet weak var tasknumber: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -429,7 +490,7 @@ class musicViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        soundtrack.tintColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -467,10 +528,10 @@ class musicChooseViewController: UIViewController, UICollectionViewDelegate, UIC
         dismiss(animated: true, completion: nil)
     }
     
-    var colors = [UIColor.systemGray, UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.systemBrown]
+    var colors = [UIColor.systemGray, UIColor.systemRed, UIColor.systemGreen, UIColor.systemBlue, UIColor.systemBrown, UIColor.systemYellow]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 6
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -518,6 +579,16 @@ class musicChooseViewController: UIViewController, UICollectionViewDelegate, UIC
         case 4:
             if numberOfTasksFinished >= 15 {
                 cell.title.text = "Beats"
+                cell.isUserInteractionEnabled = true
+
+            } else {
+                cell.isUserInteractionEnabled = false
+                cell.vinyl.image = UIImage(systemName: "lock.fill")
+                cell.title.text = "Unlock - Finish 10 Tasks Early"
+            }
+        case 5:
+            if numberOfTasksFinished >= 20 {
+                cell.title.text = "End"
                 cell.isUserInteractionEnabled = true
 
             } else {
@@ -1280,6 +1351,8 @@ class chooseTimeTask: UITableViewController {
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "WaveTune.caf"))
         case "Beats":
             content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "BeatsTune.caf"))
+        case "End":
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "EndTune.caf"))
         default:
             content.sound = UNNotificationSound.default
         }

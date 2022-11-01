@@ -126,6 +126,9 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="arrowtriangle.forward.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="fullSoundTrack:" destination="CrL-mg-Z5x" eventType="touchUpInside" id="Ih9-qB-cHo"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Music Credits: King Hey Chan, Tai Wong" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57w-9S-e4B">
                                 <rect key="frame" x="15" y="546" width="345" height="20.333333333333371"/>
@@ -159,6 +162,7 @@
                     <connections>
                         <outlet property="collectionView" destination="zQc-rX-LuI" id="Jas-CL-3dG"/>
                         <outlet property="loopbutton" destination="dhN-dH-kcL" id="9eK-8b-5yl"/>
+                        <outlet property="soundtrack" destination="Q1s-P0-GxS" id="wOe-g3-wZ3"/>
                         <outlet property="tasknumber" destination="ZXU-db-py4" id="zjG-Ib-Eyt"/>
                         <segue destination="qFe-qi-IuJ" kind="showDetail" identifier="help" id="hpq-0K-0qC"/>
                     </connections>
